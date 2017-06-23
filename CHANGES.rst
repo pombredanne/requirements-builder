@@ -11,6 +11,58 @@
 Changes
 =======
 
+Version 0.2.5 (released 2017-04-11)
+-----------------------------------
+
+Bug fixes
+~~~~~~~~~
+
+- Fixes support of recursive requirements files.
+
+Version 0.2.4 (released 2017-03-10)
+-----------------------------------
+
+Bug fixes
+~~~~~~~~~
+
+- Fixes issue with upper version requirements being stripped from the output.
+
+Version 0.2.3 (released 2017-03-09)
+-----------------------------------
+
+Bug fixes
+~~~~~~~~~
+
+- Fixes the issue with conditions on extra_require not being taken into
+  account.
+
+Version 0.2.2 (released 2017-02-01)
+-----------------------------------
+
+Bug fixes
+~~~~~~~~~
+
+- Fixes issue with properly building requirements for packages with version
+  markers.
+
+Improvements
+~~~~~~~~~~~~
+
+- Adds YAPF auto-formatting configuration.
+
+Version 0.2.1 (released 2017-01-23)
+-----------------------------------
+
+Bug fixes
+~~~~~~~~~
+
+- Accepts non-`-e` packages from devel file.
+- Sphinx 1.5+ drops support for Python 2.6 and 3.3.
+- Adds Python 3.6 support.
+- Makes `--extras` option accepting comma separated values as
+  described in help.  (#14)
+
+
 Version 0.2.0 (released 2016-09-13)
 -----------------------------------
 

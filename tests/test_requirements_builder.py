@@ -6,8 +6,7 @@
 # Requirements-Builder is free software; you can redistribute it and/or
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
-
-
+#
 """Tests for `requirements-builder` module."""
 
 from os.path import abspath, dirname, join
@@ -28,12 +27,12 @@ def test_iter_requirements():
     # Min
     with open(SETUP) as f:
         assert list(iter_requirements("min", [], '', f)) == \
-            ['click==5.0.0', 'mock==1.3.0']
+            ['click==6.1.0', 'mock==1.3.0']
 
     # PyPI
     with open(SETUP) as f:
         assert list(iter_requirements("pypi", [], '', f)) == \
-            ['click>=5.0.0', 'mock>=1.3.0']
+            ['click>=6.1.0', 'mock>=1.3.0']
 
     # Dev
     with open(SETUP) as f:

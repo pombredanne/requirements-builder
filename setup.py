@@ -1,51 +1,17 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Requirements-Builder
-# Copyright (C) 2015, 2016 CERN.
+# Copyright (C) 2015, 2016, 2017 CERN.
 #
 # Requirements-Builder is free software; you can redistribute it and/or
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
-
+#
 """Build requirements files from setup.py requirements."""
 
 import os
-import sys
 
 from setuptools import setup
-from setuptools.command.test import test as TestCommand
-
-
-class PyTest(TestCommand):
-
-    """Integration of PyTest with setuptools."""
-
-    user_options = [('pytest-args=', 'a', 'Arguments to pass to py.test')]
-
-    def initialize_options(self):
-        """Initialize options."""
-        TestCommand.initialize_options(self)
-        try:
-            from ConfigParser import ConfigParser
-        except ImportError:
-            from configparser import ConfigParser
-        config = ConfigParser()
-        config.read("pytest.ini")
-        self.pytest_args = config.get("pytest", "addopts").split(" ")
-
-    def finalize_options(self):
-        """Finalize options."""
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        """Run tests."""
-        # import here, cause outside the eggs aren't loaded
-        import pytest
-        errno = pytest.main(self.pytest_args)
-        sys.exit(errno)
-
 
 # Get the version string.  Cannot be done with import!
 g = {}
@@ -53,19 +19,18 @@ with open(os.path.join('requirements_builder', 'version.py'), 'rt') as fp:
     exec(fp.read(), g)
     version = g['__version__']
 
-
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
 with open('CHANGES.rst') as history_file:
     history = history_file.read().replace('.. :changes:', '')
 
-requirements = [
-    'click>=5.0.0',
+install_requires = [
+    'click>=6.1.0',
     'mock>=1.3.0',
 ]
 
-test_requirements = [
+tests_require = [
     'check-manifest>=0.25',
     'coverage>=4.0',
     'isort>=4.0.0',
@@ -76,17 +41,17 @@ test_requirements = [
     'pytest>=2.8.0',
 ]
 
-extras_requirements = {
+extras_require = {
     'docs': [
-        'Sphinx>=1.4.2',
+        'Sphinx<1.5.0,>=1.4.2',
+        'docutils<0.13,>=0.12',
     ],
-    'tests': test_requirements,
+    'tests': tests_require,
 }
 
-extras_requirements['all'] = (
-    extras_requirements['tests'] +
-    extras_requirements['docs']
-)
+extras_require['all'] = extras_require['tests'] + extras_require['docs']
+
+setup_requires = ['pytest-runner>=2.6.2', ]
 
 setup(
     name='requirements-builder',
@@ -97,17 +62,16 @@ setup(
     author_email='info@inveniosoftware.org',
     url='https://github.com/inveniosoftware/requirements-builder',
     entry_points={
-        'console_scripts': [
-            "requirements-builder = requirements_builder.cli:cli"
-        ]
+        'console_scripts':
+            ["requirements-builder = requirements_builder.cli:cli"]
     },
-    packages=[
-        'requirements_builder',
-    ],
+    packages=['requirements_builder', ],
     include_package_data=True,
-    install_requires=requirements,
-    extras_require=extras_requirements,
-    license="BSD",
+    extras_require=extras_require,
+    install_requires=install_requires,
+    setup_requires=setup_requires,
+    tests_require=tests_require,
+    license='BSD',
     zip_safe=False,
     keywords='requirements-builder',
     classifiers=[
@@ -121,7 +85,6 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
-    tests_require=test_requirements,
-    cmdclass={'test': PyTest},
 )
